@@ -1,0 +1,102 @@
+package ru.azbykamebeli.tracker;
+
+import android.Manifest;
+import android.app.Service;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.firebase.installations.FirebaseInstallations;
+
+/**
+ * На китайских телефонах может не быть гугловских серовисов, поэтому id лучше хранить в преференсах, а положение из коробочного Location
+ */
+public final class MainGoogleService extends Service {
+    private String
+            __string_id = null;
+
+    private LocationRequest
+            __location_request = null;
+
+    private LocationCallback
+            __location_callback = null;
+
+    private FusedLocationProviderClient
+            __fused_location_provider_client = null;
+
+    private static final long
+            UPDATE_INTERVAL = 1_000, FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
+
+    @Override
+    public IBinder onBind(final Intent __intent) {
+        return null;
+    }
+    //---
+
+    @Override
+    public void onCreate() {
+        Log.d("AzbykaTracker", ">>> SERVICE CREATED");
+
+        this.__location_request = LocationRequest.create();
+        this.__location_callback = new LocationCallback() {
+            @Override
+            public void onLocationResult(final LocationResult __location_result) {
+                if (null != __string_id) {
+                    final Location
+                            __location = __location_result.getLastLocation();
+
+                    if (null != __location) {
+                        Log.d("AzbykaTracker", "id: " + __string_id + ", latitude: " + __location.getLatitude() + ", longitude: " + __location.getLongitude());
+                    }
+                }
+            }
+        };
+        this.__fused_location_provider_client = LocationServices.getFusedLocationProviderClient(this);
+
+        // todo брать значение из преференсов, значение в преференсах заполнять через главный экран
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(
+                __task_get_id -> {
+                    if (__task_get_id.isSuccessful()) {
+                        this.__string_id = __task_get_id.getResult();
+                    }
+                }
+        );
+
+        this.__location_request.setInterval(UPDATE_INTERVAL);
+        this.__location_request.setFastestInterval(FASTEST_UPDATE_INTERVAL);
+        this.__location_request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationServices.getSettingsClient(this).checkLocationSettings(new LocationSettingsRequest.Builder().addLocationRequest(this.__location_request).build());
+    }
+    //---
+
+    @Override
+    public void onDestroy() {
+        Log.d("AzbykaTracker", ">>> SERVICE DESTROYED");
+
+        this.__fused_location_provider_client.removeLocationUpdates(this.__location_callback);
+    }
+    //---
+
+    @Override
+    public int onStartCommand(final Intent __intent, int __int_flags, int __int_start_id) {
+        Log.d("AzbykaTracker", ">>> SERVICE STARTED");
+
+        if (PackageManager.PERMISSION_GRANTED == this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            this.__fused_location_provider_client.requestLocationUpdates(this.__location_request, this.__location_callback, Looper.myLooper());
+        } else {
+            this.stopSelf();
+        }
+
+        return START_STICKY;
+    }
+}

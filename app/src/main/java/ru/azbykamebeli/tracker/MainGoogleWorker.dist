@@ -1,0 +1,85 @@
+package ru.azbykamebeli.tracker;
+
+import android.util.Log;
+import android.content.Context;
+import android.location.Location;
+import android.annotation.SuppressLint;
+
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
+
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.android.gms.location.FusedLocationProviderClient;
+
+/*
+WorkManager
+        .getInstance(this.getApplicationContext())
+        .enqueueUniquePeriodicWork(
+                "GetLocation",
+                ExistingPeriodicWorkPolicy.REPLACE,
+                new PeriodicWorkRequest
+                        .Builder(MainGoogleWorker.class, 10, TimeUnit.SECONDS)
+                        .setConstraints(
+                                new Constraints
+                                        .Builder()
+                                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                                        .build()
+                        )
+                        .addTag(TAG)
+                        .build()
+        );
+*/
+
+public final class MainGoogleWorker extends Worker {
+    private static final long
+            UPDATE_INTERVAL = 10000, FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
+
+    public MainGoogleWorker(final Context __context, final WorkerParameters __worker_parameters) {
+        super(__context, __worker_parameters);
+    }
+    //---
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public Result doWork() {
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(
+                __task_get_id -> {
+                    if (__task_get_id.isSuccessful()) {
+                        final String
+                                __string_id = __task_get_id.getResult();
+
+                        final LocationRequest
+                                __location_request = LocationRequest.create();
+
+                        final FusedLocationProviderClient
+                                __fused_location_provider_client = LocationServices.getFusedLocationProviderClient(this.getApplicationContext());
+
+                        __location_request.setInterval(UPDATE_INTERVAL);
+                        __location_request.setFastestInterval(FASTEST_UPDATE_INTERVAL);
+                        __location_request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+                        __fused_location_provider_client.getLastLocation().addOnCompleteListener(
+                                __task_get_last_location -> {
+                                    if (__task_get_last_location.isSuccessful()) {
+                                        final Location
+                                                __location = __task_get_last_location.getResult();
+
+                                        if (null != __location) {
+                                            Log.d("AzbykaTracker", "id: " + __string_id + ", latitude: " + __location.getLatitude() + ", longitude: " + __location.getLongitude());
+                                        }
+                                    }
+                                }
+                        );
+
+                        __fused_location_provider_client.requestLocationUpdates(__location_request, null);
+                    } else {
+                        // по-хорошему бы вернуть failure, но не робит
+                    }
+                }
+        );
+
+        return Result.success();
+    }
+}
