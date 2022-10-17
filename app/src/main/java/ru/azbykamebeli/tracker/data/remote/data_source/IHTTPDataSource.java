@@ -9,7 +9,6 @@ import ru.azbykamebeli.tracker.domain.model.VehicleLocationModel;
 public interface IHTTPDataSource {
     @Headers({
             "User-Agent: azbyka-tracker",
-            "Accept: application/vnd.azbykamebeli.vehicle-location.v1+json",
     })
     @POST("/ping/")
     Completable sendLocation(@Body final VehicleLocationModel __);
