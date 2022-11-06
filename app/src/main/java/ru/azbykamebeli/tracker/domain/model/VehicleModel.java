@@ -61,6 +61,10 @@ public final class VehicleModel implements IValidatable {
             return this.__string_value;
         }
 
+        /**
+         * VO немутабельны
+         * по-хорошему, экземпляр должен пересоздаваться
+         */
         public void setValue(final String __string_value) {
             this.__string_value = __string_value;
         }

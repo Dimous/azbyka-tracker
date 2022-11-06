@@ -2,6 +2,9 @@ package ru.azbykamebeli.tracker.domain.model;
 
 import java.util.Objects;
 
+/**
+ * Это корень агрегации
+ */
 public final class VehicleLocationModel implements IValidatable {
     private final LatitudeVO
             __latitude;
@@ -69,6 +72,10 @@ public final class VehicleLocationModel implements IValidatable {
             return this.__double_value;
         }
 
+        /**
+         * VO немутабельны
+         * по-хорошему, экземпляр должен пересоздаваться
+         */
         public void setValue(final double __double_value) {
             this.__double_value = __double_value;
         }
@@ -106,6 +113,10 @@ public final class VehicleLocationModel implements IValidatable {
             return this.__double_value;
         }
 
+        /**
+         * VO немутабельны
+         * по-хорошему, экземпляр должен пересоздаваться
+         */
         public void setValue(final double __double_value) {
             this.__double_value = __double_value;
         }
