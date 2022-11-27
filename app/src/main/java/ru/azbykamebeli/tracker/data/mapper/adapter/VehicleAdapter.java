@@ -26,11 +26,6 @@ public final class VehicleAdapter implements JsonSerializer<VehicleModel>, JsonD
 
     @Override
     public VehicleModel deserialize(final JsonElement __json_element, final Type __type, final JsonDeserializationContext __json_deserialization_context) throws JsonParseException {
-        final VehicleModel
-                __vehicle_model = new VehicleModel();
-
-        __vehicle_model.getRegistrationPlate().setValue(__json_element.getAsJsonObject().getAsJsonPrimitive("registration_plate").getAsString());
-
-        return __vehicle_model;
+        return new VehicleModel(new VehicleModel.RegistrationPlateVO(__json_element.getAsJsonObject().getAsJsonPrimitive("registration_plate").getAsString()));
     }
 }

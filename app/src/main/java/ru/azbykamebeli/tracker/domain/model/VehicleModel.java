@@ -7,16 +7,24 @@ import java.util.regex.Pattern;
  * Поведения нет, анемичная модель
  */
 public final class VehicleModel implements IValidatable {
-    private final RegistrationPlateVO
-            __registration_plate;
+    private RegistrationPlateVO
+            __registration_plate = null;
 
     public VehicleModel() {
-        this.__registration_plate = new RegistrationPlateVO();
+        this(null);
+    }
+
+    public VehicleModel(final RegistrationPlateVO __registration_plate) {
+        this.setRegistrationPlate(__registration_plate);
     }
     //---
 
     public RegistrationPlateVO getRegistrationPlate() {
         return this.__registration_plate;
+    }
+
+    public void setRegistrationPlate(final RegistrationPlateVO __registration_plate) {
+        this.__registration_plate = __registration_plate;
     }
     //---
 
@@ -44,29 +52,25 @@ public final class VehicleModel implements IValidatable {
     }
     //---
 
-    public final class RegistrationPlateVO {
-        private String
-                __string_value = null;
+    public static final class RegistrationPlateVO {
+        private final String
+                __string_value;
 
         private final Pattern
                 __pattern_validation_rule;
 
-        public RegistrationPlateVO() {
+        public RegistrationPlateVO(final String __string_value) {
+            this.__string_value = __string_value;
             // https://ru.stackoverflow.com/a/824910
             this.__pattern_validation_rule = Pattern.compile("(^[АВЕКМНОРСТУХ]{2}\\d{3}(?<!000)\\d{2,3}$)|(^[АВЕКМНОРСТУХ]{2}\\d{4}(?<!0000)\\d{2,3}$)|(^[АВЕКМНОРСТУХ]\\d{3}(?<!000)[АВЕКМНОРСТУХ]{2}\\d{2,3}$)|(^\\d{4}(?<!0000)[АВЕКМНОРСТУХ]{2}\\d{2,3}$)|(^[АВЕКМНОРСТУХ]{2}\\d{3}(?<!000)[АВЕКМНОРСТУХ]\\d{2,3}$)|(^Т[АВЕКМНОРСТУХ]{2}\\d{3}(?<!000)\\d{2,3}$)", Pattern.CASE_INSENSITIVE);
         }
         //---
 
+        /**
+         * это должен быть toString
+         */
         public String getValue() {
             return this.__string_value;
-        }
-
-        /**
-         * VO немутабельны
-         * по-хорошему, экземпляр должен пересоздаваться
-         */
-        public void setValue(final String __string_value) {
-            this.__string_value = __string_value;
         }
         //---
 

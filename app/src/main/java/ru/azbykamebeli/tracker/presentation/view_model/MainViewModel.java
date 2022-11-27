@@ -51,7 +51,7 @@ public final class MainViewModel extends ViewModel {
         final VehicleModel
                 __vehicle_model = this.__vehicle_repository.getVehicle().orElseGet(() -> new VehicleModel());
 
-        __vehicle_model.getRegistrationPlate().setValue(this.registration_plate.getValue());
+        __vehicle_model.setRegistrationPlate(new VehicleModel.RegistrationPlateVO(this.registration_plate.getValue()));
 
         if (__vehicle_model.isValid()) {
             this.__vehicle_repository.setVehicle(__vehicle_model);

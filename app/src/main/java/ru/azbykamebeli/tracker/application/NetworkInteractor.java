@@ -51,10 +51,7 @@ public final class NetworkInteractor implements INetworkInteractor {
                             __vehicle_location_model;
 
                     if (__network_capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && __network_capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-                        __vehicle_location_model = new VehicleLocationModel();
-
-                        __vehicle_location_model.getLatitude().setValue(__double_latitude);
-                        __vehicle_location_model.getLongitude().setValue(__double_longitude);
+                        __vehicle_location_model = new VehicleLocationModel(new VehicleLocationModel.LatitudeVO(__double_latitude), new VehicleLocationModel.LongitudeVO(__double_longitude));
 
                         this.__vehicle_repository.getVehicle().ifPresent(__vehicle_location_model::setVehicle);
 

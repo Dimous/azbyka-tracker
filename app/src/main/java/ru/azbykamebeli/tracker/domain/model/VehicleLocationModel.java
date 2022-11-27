@@ -6,28 +6,40 @@ import java.util.Objects;
  * Это корень агрегации
  */
 public final class VehicleLocationModel implements IValidatable {
-    private final LatitudeVO
-            __latitude;
-
-    private final LongitudeVO
-            __longitude;
-
     private VehicleModel
             __vehicle = null;
 
+    private LatitudeVO
+            __latitude = null;
+
+    private LongitudeVO
+            __longitude = null;
+
     public VehicleLocationModel() {
-        this.__latitude = new LatitudeVO();
-        this.__longitude = new LongitudeVO();
+        this(null, null);
+    }
+
+    public VehicleLocationModel(final LatitudeVO __latitude, final LongitudeVO __longitude) {
+        this.setLatitude(__latitude);
+        this.setLongitude(__longitude);
     }
     //---
 
     public LatitudeVO getLatitude() {
         return this.__latitude;
     }
+
+    public void setLatitude(final LatitudeVO __latitude) {
+        this.__latitude = __latitude;
+    }
     //---
 
     public LongitudeVO getLongitude() {
         return this.__longitude;
+    }
+
+    public void setLongitude(final LongitudeVO __longitude) {
+        this.__longitude = __longitude;
     }
     //---
 
@@ -64,20 +76,20 @@ public final class VehicleLocationModel implements IValidatable {
     }
     //---
 
-    public final class LatitudeVO {
-        private double
-                __double_value = 0.0;
+    public static final class LatitudeVO {
+        private final double
+                __double_value;
 
-        public double getValue() {
-            return this.__double_value;
+        public LatitudeVO(final double __double_value) {
+            this.__double_value = __double_value;
         }
+        //---
 
         /**
-         * VO немутабельны
-         * по-хорошему, экземпляр должен пересоздаваться
+         * это должен быть toDouble
          */
-        public void setValue(final double __double_value) {
-            this.__double_value = __double_value;
+        public double getValue() {
+            return this.__double_value;
         }
         //---
 
@@ -93,6 +105,9 @@ public final class VehicleLocationModel implements IValidatable {
         }
         //---
 
+        /**
+         * должно быть строковое представление toDouble
+         */
         @Override
         public String toString() {
             return new StringBuilder().append(this.getClass().getSimpleName()).append("(value: ").append(this.getValue()).append(")").toString();
@@ -105,20 +120,20 @@ public final class VehicleLocationModel implements IValidatable {
     }
     //---
 
-    public final class LongitudeVO {
-        private double
-                __double_value = 0.0;
+    public static final class LongitudeVO {
+        private final double
+                __double_value;
 
-        public double getValue() {
-            return this.__double_value;
+        public LongitudeVO(final double __double_value) {
+            this.__double_value = __double_value;
         }
+        //---
 
         /**
-         * VO немутабельны
-         * по-хорошему, экземпляр должен пересоздаваться
+         * это должен быть toDouble
          */
-        public void setValue(final double __double_value) {
-            this.__double_value = __double_value;
+        public double getValue() {
+            return this.__double_value;
         }
         //---
 
@@ -134,6 +149,9 @@ public final class VehicleLocationModel implements IValidatable {
         }
         //---
 
+        /**
+         * должно быть строковое представление toDouble
+         */
         @Override
         public String toString() {
             return new StringBuilder().append(this.getClass().getSimpleName()).append("(value: ").append(this.getValue()).append(")").toString();
