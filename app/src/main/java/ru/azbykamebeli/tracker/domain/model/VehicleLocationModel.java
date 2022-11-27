@@ -16,10 +16,11 @@ public final class VehicleLocationModel implements IValidatable {
             __longitude = null;
 
     public VehicleLocationModel() {
-        this(null, null);
+        this(null, null, null);
     }
 
-    public VehicleLocationModel(final LatitudeVO __latitude, final LongitudeVO __longitude) {
+    public VehicleLocationModel(final VehicleModel __vehicle, final LatitudeVO __latitude, final LongitudeVO __longitude) {
+        this.setVehicle(__vehicle);
         this.setLatitude(__latitude);
         this.setLongitude(__longitude);
     }
