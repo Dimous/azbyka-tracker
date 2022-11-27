@@ -32,7 +32,7 @@ public final class NetworkInteractor implements INetworkInteractor {
     //---
 
     public void sendCurrentLocation(final double __double_latitude, final double __double_longitude) {
-        this.sendCurrentLocation(__double_latitude, __double_longitude, new CompletableFuture());
+        this.sendCurrentLocation(__double_latitude, __double_longitude, new CompletableFuture<>());
     }
 
     public void sendCurrentLocation(final double __double_latitude, final double __double_longitude, final CompletableFuture<Void> __completable_future_result) {
