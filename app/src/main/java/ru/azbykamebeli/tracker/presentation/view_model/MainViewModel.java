@@ -14,8 +14,8 @@ import ru.azbykamebeli.tracker.presentation.mapper.IRegistrationPlateMapper;
 @HiltViewModel
 public final class MainViewModel extends ViewModel {
     public final MutableLiveData<String>
-            toast = new MutableLiveData(),
-            registration_plate = new MutableLiveData();
+            toast = new MutableLiveData<>(),
+            registration_plate = new MutableLiveData<>();
 
     private final IVehicleRepository
             __vehicle_repository;
@@ -49,7 +49,7 @@ public final class MainViewModel extends ViewModel {
 
     public boolean onRegistrationPlateAction(final int __int_action_id) {
         final VehicleModel
-                __vehicle_model = this.__vehicle_repository.getVehicle().orElseGet(() -> new VehicleModel());
+                __vehicle_model = this.__vehicle_repository.getVehicle().orElseGet(VehicleModel::new);
 
         __vehicle_model.setRegistrationPlate(new VehicleModel.RegistrationPlateVO(this.registration_plate.getValue()));
 

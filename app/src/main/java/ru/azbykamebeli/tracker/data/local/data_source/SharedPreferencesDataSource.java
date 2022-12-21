@@ -31,9 +31,7 @@ public final class SharedPreferencesDataSource implements ISharedPreferencesData
                     this.__shared_preferences.registerOnSharedPreferenceChangeListener(__on_shared_preferences_change_listener);
 
                     __observable_emitter.setCancellable(
-                            () -> {
-                                this.__shared_preferences.unregisterOnSharedPreferenceChangeListener(__on_shared_preferences_change_listener);
-                            }
+                            () -> this.__shared_preferences.unregisterOnSharedPreferenceChangeListener(__on_shared_preferences_change_listener)
                     );
                 }
         );

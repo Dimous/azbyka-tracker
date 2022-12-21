@@ -12,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Map;
+
 import dagger.hilt.android.AndroidEntryPoint;
 import ru.azbykamebeli.tracker.R;
 import ru.azbykamebeli.tracker.databinding.ActivityMainBinding;
@@ -33,9 +35,7 @@ public final class MainActivity extends ComponentActivity {
         __activity_main_binding.setModel(__main_view_model);
 
         __main_view_model.toast.observeForever(
-                __string_text -> {
-                    Toast.makeText(this, __string_text, Toast.LENGTH_LONG).show();
-                }
+                __string_text -> Toast.makeText(this, __string_text, Toast.LENGTH_LONG).show()
         );
 
         // не поможет, если экспедитор нажмёт кнопку
@@ -45,7 +45,7 @@ public final class MainActivity extends ComponentActivity {
                         new ActivityResultContracts.RequestMultiplePermissions(),
                         __map_result -> {
                             final String[]
-                                    __array_denied_permissions = __map_result.entrySet().stream().filter(__entry -> !__entry.getValue()).map(__entry -> __entry.getKey()).toArray(String[]::new);
+                                    __array_denied_permissions = __map_result.entrySet().stream().filter(__entry -> !__entry.getValue()).map(Map.Entry::getKey).toArray(String[]::new);
 
                             if (0 == __array_denied_permissions.length) {
                                 __main_view_model.onInitialize();
