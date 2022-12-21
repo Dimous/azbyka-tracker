@@ -2,7 +2,6 @@ package ru.azbykamebeli.tracker.content;
 
 /**
  * Пусть это будут значения по умолчанию
- * @todo добавить экран конфигурации
  */
 public final class Constant {
     public static final int LOCATION_INTERVAL = 0;

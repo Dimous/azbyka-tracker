@@ -1,8 +1,5 @@
 package ru.azbykamebeli.tracker.infrastructure.service;
 
-import static ru.azbykamebeli.tracker.content.Constant.LOCATION_DISTANCE;
-import static ru.azbykamebeli.tracker.content.Constant.LOCATION_INTERVAL;
-
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -21,6 +18,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import ru.azbykamebeli.tracker.R;
 import ru.azbykamebeli.tracker.application.INetworkInteractor;
+import ru.azbykamebeli.tracker.domain.ISettingsRepository;
+import ru.azbykamebeli.tracker.domain.model.SettingsModel;
 import ru.azbykamebeli.tracker.presentation.activity.MainActivity;
 
 @AndroidEntryPoint
@@ -28,6 +27,10 @@ public final class MainService extends Service {
     @Inject
     protected INetworkInteractor
             _network_interactor;
+
+    @Inject
+    protected ISettingsRepository
+            _settings_repository;
 
     private LocationManager
             __location_manager = null;
@@ -59,9 +62,13 @@ public final class MainService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        final SettingsModel
+                __settings_model = this._settings_repository.getSettings().orElseGet(SettingsModel::new);
+
         this.__location_manager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
-        this.__location_manager.requestLocationUpdates(LocationManager.FUSED_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, this.__location_listener);
+        // todo перенести в слушатель изменения значений (отписывать, подписывать заново)
+        this.__location_manager.requestLocationUpdates(LocationManager.FUSED_PROVIDER, __settings_model.getLocationInterval(), __settings_model.getLocationDistance(), this.__location_listener);
     }
     //---
 

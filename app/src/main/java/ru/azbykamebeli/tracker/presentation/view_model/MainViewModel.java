@@ -14,8 +14,11 @@ import ru.azbykamebeli.tracker.presentation.mapper.IRegistrationPlateMapper;
 @HiltViewModel
 public final class MainViewModel extends ViewModel {
     public final MutableLiveData<String>
-            toast = new MutableLiveData(),
-            registration_plate = new MutableLiveData();
+            toast = new MutableLiveData<>(),
+            registration_plate = new MutableLiveData<>();
+
+    public final MutableLiveData<Boolean>
+            is_settings_dialog_visible = new MutableLiveData<>(false);
 
     private final IVehicleRepository
             __vehicle_repository;
@@ -38,18 +41,19 @@ public final class MainViewModel extends ViewModel {
         this.__service_interactor.start();
 
         this.__vehicle_repository.getVehicle().ifPresent(
-                __vehicle_model -> {
-                    this.registration_plate.postValue(
-                            this.__registration_plate_mapper.toView(__vehicle_model.getRegistrationPlate())
-                    );
-                }
+                __vehicle_model -> this.registration_plate.postValue(this.__registration_plate_mapper.toView(__vehicle_model.getRegistrationPlate()))
         );
+    }
+    //---
+
+    public void onSettingsButtonClick() {
+        this.is_settings_dialog_visible.postValue(!this.is_settings_dialog_visible.getValue());
     }
     //---
 
     public boolean onRegistrationPlateAction(final int __int_action_id) {
         final VehicleModel
-                __vehicle_model = this.__vehicle_repository.getVehicle().orElseGet(() -> new VehicleModel());
+                __vehicle_model = this.__vehicle_repository.getVehicle().orElseGet(VehicleModel::new);
 
         __vehicle_model.setRegistrationPlate(new VehicleModel.RegistrationPlateVO(this.registration_plate.getValue()));
 

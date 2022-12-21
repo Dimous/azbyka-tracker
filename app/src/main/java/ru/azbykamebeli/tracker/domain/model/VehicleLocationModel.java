@@ -1,5 +1,7 @@
 package ru.azbykamebeli.tracker.domain.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 /**
@@ -71,9 +73,10 @@ public final class VehicleLocationModel implements IValidatable {
     }
     //---
 
+    @NonNull
     @Override
     public String toString() {
-        return new StringBuilder().append(this.getClass().getSimpleName()).append("(latitude: ").append(this.getLatitude()).append(", longitude: ").append(this.getLongitude()).append(", vehicle: ").append(this.getVehicle()).append(")").toString();
+        return this.getClass().getSimpleName() + "(latitude: " + this.__latitude + ", longitude: " + this.__longitude + ", vehicle: " + this.__vehicle + ")";
     }
     //---
 
@@ -109,9 +112,10 @@ public final class VehicleLocationModel implements IValidatable {
         /**
          * должно быть строковое представление toDouble
          */
+        @NonNull
         @Override
         public String toString() {
-            return new StringBuilder().append(this.getClass().getSimpleName()).append("(value: ").append(this.getValue()).append(")").toString();
+            return this.getClass().getSimpleName() + "(value: " + this.__double_value + ")";
         }
         //---
 
@@ -153,9 +157,10 @@ public final class VehicleLocationModel implements IValidatable {
         /**
          * должно быть строковое представление toDouble
          */
+        @NonNull
         @Override
         public String toString() {
-            return new StringBuilder().append(this.getClass().getSimpleName()).append("(value: ").append(this.getValue()).append(")").toString();
+            return this.getClass().getSimpleName() + "(value: " + this.__double_value + ")";
         }
         //---
 

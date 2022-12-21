@@ -13,12 +13,14 @@ import java.lang.reflect.Type;
 import ru.azbykamebeli.tracker.domain.model.VehicleModel;
 
 public final class VehicleAdapter implements JsonSerializer<VehicleModel>, JsonDeserializer<VehicleModel> {
+    private static final String FIELD_REGISTRATION_PLATE = "registration_plate";
+
     @Override
     public JsonElement serialize(final VehicleModel __vehicle_model, final Type __type, final JsonSerializationContext __json_serialization_context) {
         final JsonObject
                 __json_object = new JsonObject();
 
-        __json_object.addProperty("registration_plate", __vehicle_model.getRegistrationPlate().getValue());
+        __json_object.addProperty(FIELD_REGISTRATION_PLATE, __vehicle_model.getRegistrationPlate().getValue());
 
         return __json_object;
     }
@@ -26,6 +28,6 @@ public final class VehicleAdapter implements JsonSerializer<VehicleModel>, JsonD
 
     @Override
     public VehicleModel deserialize(final JsonElement __json_element, final Type __type, final JsonDeserializationContext __json_deserialization_context) throws JsonParseException {
-        return new VehicleModel(new VehicleModel.RegistrationPlateVO(__json_element.getAsJsonObject().getAsJsonPrimitive("registration_plate").getAsString()));
+        return new VehicleModel(new VehicleModel.RegistrationPlateVO(__json_element.getAsJsonObject().getAsJsonPrimitive(FIELD_REGISTRATION_PLATE).getAsString()));
     }
 }

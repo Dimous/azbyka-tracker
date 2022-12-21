@@ -21,7 +21,7 @@ public final class VehicleRepository implements IVehicleRepository {
     private final ISharedPreferencesDataSource
             __shared_preferences_data_source;
 
-    private static final String SOURCE_KEY = "vehicle";
+    private static final String SOURCE_KEY = "bfbba61e-6e4f-4e2b-a879-ae07edd23463";
 
     @Inject
     VehicleRepository(final IMainMapper __main_mapper, final ISharedPreferencesDataSource __shared_preferences_data_source) {
@@ -29,10 +29,8 @@ public final class VehicleRepository implements IVehicleRepository {
         this.__shared_preferences_data_source = __shared_preferences_data_source;
 
         // finalize может не вызваться, а AutoClosable -- для try-with-resource; репозиторий синглтон уровня приложения, можно не беспокоиться об отписке
-        this.__shared_preferences_data_source.getObservable().observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).filter(__string_key -> SOURCE_KEY == __string_key).subscribe( // если будет сабджект, это будет в ComposableSubscription
-                __string_key -> {
-                    this.resetCurrentVehicle(); // если будет сабджект, перенести в doOnNext, чтобы current всегда освежался первым
-                }
+        this.__shared_preferences_data_source.getObservable().observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).filter(__string_key -> __string_key.equals(SOURCE_KEY)).subscribe( // если будет сабджект, это будет в ComposableSubscription
+                __string_key -> this.resetCurrentVehicle()
         );
 
         // todo завести сабджект, подписывающийся на отфильтрованный обзёрвабл, пусть делается mapTo с getVehicle

@@ -1,6 +1,7 @@
 package ru.azbykamebeli.tracker.data.mapper;
 
 import retrofit2.Converter;
+import ru.azbykamebeli.tracker.domain.model.SettingsModel;
 import ru.azbykamebeli.tracker.domain.model.VehicleModel;
 
 public interface IMainMapper {
@@ -9,4 +10,8 @@ public interface IMainMapper {
     VehicleModel toVehicle(final String __string_json);
 
     String fromVehicle(final VehicleModel __vehicle_model);
+
+    SettingsModel toSettings(final String __string_json);
+
+    String fromSettings(final SettingsModel __settings_model);
 }

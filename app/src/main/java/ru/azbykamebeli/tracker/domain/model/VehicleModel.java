@@ -1,5 +1,7 @@
 package ru.azbykamebeli.tracker.domain.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -40,9 +42,10 @@ public final class VehicleModel implements IValidatable {
     }
     //---
 
+    @NonNull
     @Override
     public String toString() {
-        return new StringBuilder().append(this.getClass().getSimpleName()).append("(registration plate: ").append(this.getRegistrationPlate()).append(")").toString();
+        return this.getClass().getSimpleName() + "(registration plate: " + this.__registration_plate + ")";
     }
     //---
 
@@ -86,9 +89,10 @@ public final class VehicleModel implements IValidatable {
         }
         //---
 
+        @NonNull
         @Override
         public String toString() {
-            return new StringBuilder().append(this.getClass().getSimpleName()).append("(value: ").append(this.getValue()).append(")").toString();
+            return this.getClass().getSimpleName() + "(value: " + this.__string_value + ")";
         }
         //---
 

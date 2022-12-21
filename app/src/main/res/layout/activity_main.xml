@@ -26,6 +26,23 @@
             app:onEditorActionListener="@{(view, action_id, event) -> model.onRegistrationPlateAction(action_id)}"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
+
+        <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:onClick="@{() -> model.onSettingsButtonClick()}"
+            android:src="@android:drawable/ic_menu_preferences"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ru.azbykamebeli.tracker.presentation.view.SettingsDialogView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="@{model.is_settings_dialog_visible ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>
